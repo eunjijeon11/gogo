@@ -1,55 +1,47 @@
-import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { Code } from "@nextui-org/code";
-import { button as buttonStyles } from "@nextui-org/theme";
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
-
 export default function Home() {
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-lg text-center justify-center">
-        <h1 className={title()}>Make&nbsp;</h1>
-        <h1 className={title({ color: "violet" })}>beautiful&nbsp;</h1>
-        <br />
-        <h1 className={title()}>
-          websites regardless of your design experience.
-        </h1>
-        <h2 className={subtitle({ class: "mt-4" })}>
-          Beautiful, fast and modern React UI library.
-        </h2>
-      </div>
+    <div>
+      <section className="flex flex-row items-center h-[calc(100vh-65px)] gap-4">
+        <div className="flex-1">
+          <p className="text-center text-6xl font-bold">내 진로계획을</p>
+          <p className="text-center text-6xl font-bold text-purple-500">
+            어쩌구 저쩌구
+          </p>
+          <p className="text-center text-xl text-gray-500">
+            설명 어쩌구 저쩌구 아하하하하하하
+          </p>
+        </div>
+        <div className="flex-1 justify-center">
+          <div className="w-[100] h-80 bg-slate-300" />
+        </div>
+      </section>
 
-      <div className="flex gap-3">
-        <Link
-          isExternal
-          href={siteConfig.links.docs}
-          className={buttonStyles({
-            color: "primary",
-            radius: "full",
-            variant: "shadow",
-          })}
-        >
-          Documentation
-        </Link>
-        <Link
-          isExternal
-          className={buttonStyles({ variant: "bordered", radius: "full" })}
-          href={siteConfig.links.github}
-        >
-          <GithubIcon size={20} />
-          GitHub
-        </Link>
-      </div>
+      <section className="flex flex-row items-center h-[calc(100vh-65px)] gap-4">
+        <div className="flex-1 justify-center">
+          <div className="w-[100] h-80 bg-slate-300" />
+        </div>
+        <p className="flex-1 text-center text-6xl font-bold">
+          내 진로계획을 <br /> 어쩌구 저쩌구
+        </p>
+      </section>
 
-      <div className="mt-8">
-        <Snippet hideSymbol hideCopyButton variant="flat">
-          <span>
-            Get started by editing <Code color="primary">app/page.tsx</Code>
-          </span>
-        </Snippet>
-      </div>
-    </section>
+      <section className="flex flex-row items-center h-[calc(100vh-65px)] gap-4">
+        <p className="flex-1 text-center text-6xl font-bold">
+          내 진로계획을 <br /> 어쩌구 저쩌구
+        </p>
+        <div className="flex-1 justify-center">
+          <div className="w-[100] h-80 bg-slate-300" />
+        </div>
+      </section>
+
+      <section className="flex flex-row items-center h-[calc(100vh-65px)] gap-4">
+        <p className="flex-1 text-center text-6xl font-bold">
+          내 진로계획을 <br /> 어쩌구 저쩌구
+        </p>
+        <div className="flex-1 justify-center">
+          <div className="w-[100] h-80 bg-slate-300" />
+        </div>
+      </section>
+    </div>
   );
 }

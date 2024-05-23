@@ -12,6 +12,10 @@ export const siteConfig = {
       label: "Upload",
       href: "/upload",
     },
+    {
+      label: "Dashboard",
+      href: "/dashboard",
+    },
   ],
   links: {
     github: "https://github.com/eunjijeon11/gogyo",
