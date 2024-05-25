@@ -5,8 +5,11 @@ import {
   CardBody,
   CardHeader,
   Divider,
+  Input,
+  Spacer,
 } from "@nextui-org/react";
 import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
+import { IoMdMail } from "react-icons/io";
 import { ChipList } from "../../components/ChipList";
 
 const careerList = [
@@ -38,18 +41,52 @@ export default function DashboardPage() {
         </div>
         <Divider orientation="vertical" />
       </div>
-      <div className="flex flex-col row-span-2 col-span-2 px-4 gap-2">
-        <h1 className="text-xl font-bold">후속활동 추천</h1>
+      <div className="flex flex-col row-span-2 col-span-2 px-2 gap-2">
+        <div className="flex flex-row items-center">
+          <h1 className="text-xl font-bold">후속 활동 추천</h1>
+          <div className="grow" />
+          <ButtonGroup>
+            <Button isIconOnly color="transparent">
+              <BiSolidLeftArrow />
+            </Button>
+            <Button isIconOnly color="transparent">
+              <BiSolidRightArrow />
+            </Button>
+          </ButtonGroup>
+        </div>
         <div className="flex flex-grow flex-row gap-4">
           <Activity index={0} />
           <Activity index={1} />
         </div>
       </div>
-      <div className="bg-slate-400"></div>
-      <div className=""></div>
+      <div className="flex flex-col p-2 gap-2">
+        <h1 className="text-xl font-bold">관련 도서 추천</h1>
+        <div className="flex flex-grow flex-row gap-6">
+          <Book />
+          <Book />
+          <Book />
+        </div>
+      </div>
+      <div className="flex flex-col p-2 gap-2">
+        <h1 className="text-xl font-bold">이 학과에 관심이 있나요?</h1>
+        <div className="flex-grow flex flex-col justify-center items-center">
+          <p>뉴스레터를 정기적으로 구독해보세요.</p>
+          <Spacer y={2} />
+          <Input
+            type="email"
+            placeholder="junior@example.com"
+            className="max-w-[250px]"
+            endContent={<IoMdMail className="text-2xl text-default-400" />}
+          />
+        </div>
+      </div>
     </div>
   );
 }
+
+const Book = () => {
+  return <div className="w-24 h-full bg-slate-300" />;
+};
 
 const Activity: React.FunctionComponent<{ index: number }> = ({ index }) => {
   return (
@@ -61,11 +98,15 @@ const Activity: React.FunctionComponent<{ index: number }> = ({ index }) => {
         <p>
           인공지능을 머신러닝과 딥러닝으로 나누어 설명하고 회귀에 대해 설명함.
         </p>
+        <Spacer y={2} />
         <h2 className="font-bold">후속 활동</h2>
         <p>
           경사하강법을 사용해 선형회귀를 하는 방법을 조사하여 발표합니다. 함수의
           미분과 연관지어 설명하면 좋아요.
         </p>
+        <Spacer y={2} />
+        <h2 className="font-bold">관련 교과목</h2>
+        <p>수학1, 미적분</p>
       </CardBody>
     </Card>
   );
