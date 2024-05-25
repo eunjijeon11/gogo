@@ -53,9 +53,9 @@ export default function AboutPage() {
 			  <p className="text-center p-4">PDF 미리보기가 여기에 표시됩니다</p>
 			)}
 		  </div>
-		  <section className="ml-4">
+		  <section className="ml-8">
 			<input type="file" accept="application/pdf" onChange={onFileChange} className="mb-4" style={{ display: loading ? 'none' : 'block' }} />
-			<Button onClick={handleAnalysis} className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" style={{ display: loading ? 'none' : 'block' }}>
+			<Button onClick={handleAnalysis}  style={{ display: loading ? 'none' : 'block' }}>
 			  분석하기
 			</Button>
 		  </section>
