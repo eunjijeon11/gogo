@@ -111,7 +111,7 @@ export default function Plan() {
 											</Card>
 										</div>
 										<ChipList title="이 진로와 관련된 과목" list={subjectList} />
-										<ChipList title="이 학과와 관련된 능력" list={skillList} />
+										<ChipList title="이 진로와 관련된 능력" list={skillList} />
 									</div>
 									<Divider orientation="vertical" />
 								</div>
