@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "아오 구래건",
+  name: "건전지",
   description: "대회 1등 ㄱㄱㄱ",
   navItems: [
     {
