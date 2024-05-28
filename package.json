@@ -9,8 +9,8 @@
 		"lint": "next lint"
 	},
 	"dependencies": {
+		"@google/generative-ai": "^0.11.4",
 		"@nextui-org/react": "^2.3.6",
-		"react-icons": "^5.2.1",
 		"@react-aria/ssr": "^3.9.4",
 		"@react-aria/visually-hidden": "^3.8.12",
 		"@types/node": "20.12.12",
@@ -25,14 +25,17 @@
 		"intl-messageformat": "^10.5.14",
 		"next": "14.2.3",
 		"next-themes": "^0.3.0",
+		"openai": "^4.47.1",
 		"postcss": "8.4.38",
 		"react": "18.3.1",
 		"react-dom": "18.3.1",
+		"react-icons": "^5.2.1",
 		"react-intersection-observer": "^9.10.2",
 		"react-pdf": "^8.0.2",
 		"react-spring": "^9.7.3",
 		"tailwind-variants": "^0.2.1",
 		"tailwindcss": "3.4.3",
+		"tesseract.js": "^5.1.0",
 		"typescript": "5.4.5"
 	}
 }
