@@ -1,3 +1,4 @@
+"use client";
 import {
   Button,
   ButtonGroup,
@@ -10,7 +11,12 @@ import {
 } from "@nextui-org/react";
 import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
 import { IoMdMail } from "react-icons/io";
-import { ChipList } from "../../components/ChipList";
+import { ChipList } from "../../components/chipList";
+import { ActivityCard } from "../../components/activity";
+import { useRecoilValue } from "recoil";
+import { resultState } from "../../components/recoil";
+import { ActivityType } from "@/types/result";
+import { useEffect, useState } from "react";
 
 const careerList = [
   "컴퓨터교사",
@@ -31,33 +37,31 @@ const subjectList = [
 ];
 
 export default function DashboardPage() {
+  const result = useRecoilValue(resultState);
+  const [index, setIndex] = useState(0);
+
+  function changeIndex(delta: number) {
+    setIndex(Math.min(Math.max(index + delta, 0), result.length - 1));
+  }
+
   return (
-    <div className="grid gap-2 grid-cols-3 grid-rows-3 w-full h-[calc(100vh-65px)] p-4">
+    <div className="grid gap-2 grid-cols-3 grid-rows-3 w-full h-[calc(100vh-65px)] max-h-[900px] p-4">
       <div className="flex flex-row row-span-3 gap-4">
         <div className="flex flex-col gap-4">
-          <Major index={0} />
-          <ChipList title="이 학과와 관련된 진로" list={careerList} />
-          <ChipList title="이 학과와 관련된 과목" list={subjectList} />
+          <Major major={result[index].major} changeIndex={changeIndex} />
+          <ChipList
+            title="이 학과와 관련된 진로"
+            list={result[index].careers}
+          />
+          <ChipList
+            title="이 학과와 관련된 과목"
+            list={result[index].subjects}
+          />
         </div>
         <Divider orientation="vertical" />
       </div>
       <div className="flex flex-col row-span-2 col-span-2 px-2 gap-2">
-        <div className="flex flex-row items-center">
-          <h1 className="text-xl font-bold">후속 활동 추천</h1>
-          <div className="grow" />
-          <ButtonGroup>
-            <Button isIconOnly color="transparent">
-              <BiSolidLeftArrow />
-            </Button>
-            <Button isIconOnly color="transparent">
-              <BiSolidRightArrow />
-            </Button>
-          </ButtonGroup>
-        </div>
-        <div className="flex flex-grow flex-row gap-4">
-          <Activity index={0} />
-          <Activity index={1} />
-        </div>
+        <Activity activities={result[index].activities} />
       </div>
       <div className="flex flex-col p-2 gap-2">
         <h1 className="text-xl font-bold">관련 도서 추천</h1>
@@ -76,7 +80,15 @@ export default function DashboardPage() {
             type="email"
             placeholder="junior@example.com"
             className="max-w-[250px]"
-            endContent={<IoMdMail className="text-2xl text-default-400" />}
+            classNames={{
+              input: ["group-data-[focus=true]:text-zinc-900"],
+              inputWrapper: ["group-data-[focus=true]:bg-purple-100", "pr-0"],
+            }}
+            endContent={
+              <Button isIconOnly className="bg-transparent">
+                <IoMdMail className="text-2xl text-purple-400" />
+              </Button>
+            }
           />
         </div>
       </div>
@@ -84,59 +96,97 @@ export default function DashboardPage() {
   );
 }
 
+const Activity: React.FunctionComponent<{
+  activities: ActivityType[];
+}> = ({ activities }) => {
+  const [activityPage, setPage] = useState(0);
+
+  useEffect(() => {
+    setPage(0);
+  }, [activities]);
+
+  return (
+    <>
+      <div className="flex flex-row items-center">
+        <h1 className="text-xl font-bold">후속 활동 추천</h1>
+        <div className="grow" />
+        <ButtonGroup>
+          <Button
+            isIconOnly
+            className="bg-transparent"
+            onClick={() => {
+              setPage(Math.max(activityPage - 1, 0));
+            }}
+          >
+            <BiSolidLeftArrow />
+          </Button>
+          <Button
+            isIconOnly
+            className="bg-transparent"
+            onClick={() => {
+              setPage(
+                Math.min(activityPage + 1, (activities.length + 1) / 2 - 1)
+              );
+            }}
+          >
+            <BiSolidRightArrow />
+          </Button>
+        </ButtonGroup>
+      </div>
+      <div className="flex flex-grow flex-row gap-4">
+        {activities
+          .slice(
+            activityPage * 2,
+            Math.min((activityPage + 1) * 2, activities.length)
+          )
+          .map((value) => (
+            <ActivityCard key={value.title} activity={value} />
+          ))}
+      </div>
+    </>
+  );
+};
+
 const Book = () => {
   return <div className="w-24 h-full bg-slate-300" />;
 };
 
-const Activity: React.FunctionComponent<{ index: number }> = ({ index }) => {
-  return (
-    <Card className="w-[500px]" shadow="sm">
-      <CardHeader>1. 경사하강법을 조사하여 발표하기</CardHeader>
-      <Divider />
-      <CardBody>
-        <h2 className="font-bold">기존 활동</h2>
-        <p>
-          인공지능을 머신러닝과 딥러닝으로 나누어 설명하고 회귀에 대해 설명함.
-        </p>
-        <Spacer y={2} />
-        <h2 className="font-bold">후속 활동</h2>
-        <p>
-          경사하강법을 사용해 선형회귀를 하는 방법을 조사하여 발표합니다. 함수의
-          미분과 연관지어 설명하면 좋아요.
-        </p>
-        <Spacer y={2} />
-        <h2 className="font-bold">관련 교과목</h2>
-        <p>수학1, 미적분</p>
-      </CardBody>
-    </Card>
-  );
-};
-
-const Major: React.FunctionComponent<{ index: number }> = ({ index }) => {
+const Major: React.FunctionComponent<{
+  major: {
+    majorName: String;
+    description: String;
+  };
+  changeIndex: (delta: number) => void;
+}> = ({ major, changeIndex }) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-row items-center">
         <h1 className="text-xl font-bold">학과 추천</h1>
         <div className="grow" />
         <ButtonGroup>
-          <Button isIconOnly color="transparent">
+          <Button
+            isIconOnly
+            className="bg-transparent"
+            onClick={() => changeIndex(-1)}
+          >
             <BiSolidLeftArrow />
           </Button>
-          <Button isIconOnly color="transparent">
+          <Button
+            isIconOnly
+            className="bg-transparent"
+            onClick={() => changeIndex(1)}
+          >
             <BiSolidRightArrow />
           </Button>
         </ButtonGroup>
       </div>
       <Card shadow="sm">
-        <CardHeader className="text-purple-500 dark:text-purple-300 bg-purple-100 dark:bg-default">
-          컴퓨터교육과
+        <CardHeader className="dark:text-purple-300 bg-purple-100 dark:bg-default">
+          {major.majorName}
         </CardHeader>
         <Divider />
         <CardBody>
-          <p>
-            컴퓨터 하드웨어, 소프트웨어, 프로그래밍 등의 전문 지식과 교육학 이론
-            및 실제를 겸비한 정보 교육 전문가를 양성하는 학과입니다.
-          </p>
+          <p>{major.description}</p>
         </CardBody>
       </Card>
     </div>

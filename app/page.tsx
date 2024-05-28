@@ -16,7 +16,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex flex-row items-center h-[calc(100vh-65px)] gap-4">
+      <section className="flex flex-row items-center h-[800px] gap-4">
         <div className="flex-1 justify-center">
           <div className="w-[100] h-80 bg-slate-300" />
         </div>
@@ -25,7 +25,7 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="flex flex-row items-center h-[calc(100vh-65px)] gap-4">
+      <section className="flex flex-row items-center h-[800px] gap-4">
         <p className="flex-1 text-center text-6xl font-bold">
           내 진로계획을 <br /> 어쩌구 저쩌구
         </p>
@@ -34,7 +34,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="flex flex-row items-center h-[calc(100vh-65px)] gap-4">
+      <section className="flex flex-row items-center h-[800px] gap-4">
         <p className="flex-1 text-center text-6xl font-bold">
           내 진로계획을 <br /> 어쩌구 저쩌구
         </p>
