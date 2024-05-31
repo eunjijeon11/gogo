@@ -5,10 +5,8 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import { Button } from "@nextui-org/button";
 import { runGoogleGenerativeAI } from './runGoogleGenerativeAI';
-import { time } from 'console';
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -107,4 +105,3 @@ export default function AboutPage() {
 		</section>
 	);
 }
-

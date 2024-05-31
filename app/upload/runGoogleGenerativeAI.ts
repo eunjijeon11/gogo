@@ -11,16 +11,29 @@ function base64ToGenerativePart(base64Data: string, mimeType: string): Part {
   };
 }
 
-export async function runGoogleGenerativeAI(imagesData: string[]): Promise<void> {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = "고등학교 생활 기록부야. 해당 내용을 정리하고, 학생의 진로를 파악해줘. 희망분야라는 항목을 참고하면 될거야. 명확한 진로가 드러나있지 않은 생기부 인 것 같으면 제일 먼저 0을, 진로가 드러나는 것 같으면 1을 입력해줘. \
-  1을 입력한 경우, 학생의 미래 진로, 주요활동 한가지, 그에 대한 추천 후속활동 한가지, 추천 독서 한권을 제공해줘.";
-  
+async function fetchPromptText(): Promise<string> {
+  const response = await fetch('/prompt.txt');
+  if (!response.ok) {
+    throw new Error('프롬프트 텍스트를 가져오는 데 실패했습니다.');
+  }
+  return await response.text();
+}
+export async function runGoogleGenerativeAI(imagesData: string[]): Promise<void> {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+  const prompt = await fetchPromptText(); 
+
   const imageParts: Part[] = imagesData.map(data => base64ToGenerativePart(data, "image/png"));
 
   const result = await model.generateContent([prompt, ...imageParts]);
   const response = await result.response;
   const text = await response.text();
   console.log(text);
+ 
+  if (text.charAt(0) === '0') {
+    window.location.href = '/nodream';
+  } else if (text.charAt(0) === '1') {
+    //window.location.href = '/dashboard';
+  }
+
 }
