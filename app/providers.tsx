@@ -16,16 +16,10 @@ export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();
 
   return (
-    <>
-      <html>
-        <body>
-          <NextUIProvider navigate={router.push}>
-            <NextThemesProvider {...themeProps}>
-              <RecoilRoot>{children}</RecoilRoot>
-            </NextThemesProvider>
-          </NextUIProvider>
-        </body>
-      </html>
-    </>
+    <NextUIProvider navigate={router.push}>
+      <NextThemesProvider {...themeProps}>
+        <RecoilRoot>{children}</RecoilRoot>
+      </NextThemesProvider>
+    </NextUIProvider>
   );
 }

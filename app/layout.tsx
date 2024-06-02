@@ -5,7 +5,6 @@ import { pretendard } from "@/config/fonts";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
 
-
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -24,12 +23,24 @@ export const viewport: Viewport = {
   ],
 };
 
-
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <Providers>
-      <Navbar />
-      <main className="container mx-auto px-4">{children}</main>
-    </Providers>
+    <html lang="en" suppressHydrationWarning>
+      <head />
+      <body className={pretendard.className}>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+          <div className="relative flex flex-col h-max">
+            <Navbar />
+            <main className="container mx-auto max-w-8xl flex-grow">
+              {children}
+            </main>
+          </div>
+        </Providers>
+      </body>
+    </html>
   );
 }
