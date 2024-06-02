@@ -18,24 +18,6 @@ import { resultState } from "../../components/recoil";
 import { ActivityType } from "@/types/result";
 import { useEffect, useState } from "react";
 
-const careerList = [
-  "컴퓨터교사",
-  "IT기업",
-  "대학원",
-  "백수",
-  "하하하",
-  "등등등",
-];
-
-const subjectList = [
-  "정보",
-  "인공지능 기초",
-  "수학1",
-  "수학2",
-  "미적분",
-  "확률과 통계",
-];
-
 export default function DashboardPage() {
   const result = useRecoilValue(resultState);
   const [index, setIndex] = useState(0);
