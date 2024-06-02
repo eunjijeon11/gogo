@@ -11,7 +11,7 @@ import {
   Divider,
 } from "@nextui-org/react";
 import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
-import { ChipList } from "../../components/chipList";
+import { ChipList } from "../../components/ChipList";
 
 const skillList = ["논리력", "사고력", "협동심"];
 

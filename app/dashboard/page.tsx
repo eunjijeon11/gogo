@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
 import { IoMdMail } from "react-icons/io";
-import { ChipList } from "../../components/chipList";
+import { ChipList } from "../../components/ChipList";
 import { ActivityCard } from "../../components/activity";
 import { useRecoilValue } from "recoil";
 import { resultState } from "../../components/recoil";
