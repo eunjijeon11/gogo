@@ -45,10 +45,10 @@ export async function runGoogleGenerativeAI(imagesData: string[]): Promise<void>
   console.log(determine_dream);
 
  
-  if (determine_dream === 0) {
+  if (determine_dream == 0) {
     window.location.href = '/nodream';
-  } else if (determine_dream === 1) {
+  } else if (determine_dream == 1) {
     window.location.href = '/dashboard';
   }
-
+ 
 }
