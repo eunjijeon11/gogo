@@ -10,7 +10,7 @@ export const ChipList: React.FunctionComponent<{
       <div className="flex flex-wrap gap-2">
         {list.map((value) => (
           <Chip
-            key="value"
+            key={value}
             classNames={{
               base: "bg-purple-100 dark:bg-default",
               content: "text-purple-500 dark:text-purple-300",
