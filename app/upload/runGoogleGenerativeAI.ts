@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI, Part } from "@google/generative-ai";
+import { get } from "http";
 
-const genAI = new GoogleGenerativeAI("AIzaSyBqP7gRKSVDguyjmngybYG6LXeB2b_eSRo");
+const genAI = new GoogleGenerativeAI("AIzaSyDXnUHVCino5SBwXmEd7YKzeAqHkaGx1KA");
 
 function base64ToGenerativePart(base64Data: string, mimeType: string): Part {
   return {
@@ -11,6 +12,12 @@ function base64ToGenerativePart(base64Data: string, mimeType: string): Part {
   };
 }
 
+
+function getFirstElement(jsonObj: any) {
+  const keys = Object.keys(jsonObj); 
+  const firstKey = keys[0]; 
+  return jsonObj[firstKey];  
+}
 
 async function fetchPromptText(): Promise<string> {
   const response = await fetch('/prompt.txt');
@@ -29,11 +36,19 @@ export async function runGoogleGenerativeAI(imagesData: string[]): Promise<void>
   const response = await result.response;
   const text = await response.text();
   console.log(text);
+
+  const cleanedText = text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
+  const cleanedTextJson = JSON.parse(cleanedText); //json 형식으로 변환
+
+  getFirstElement(cleanedTextJson);
+  const determine_dream = getFirstElement(cleanedTextJson);
+  console.log(determine_dream);
+
  
-  if (text.charAt(0) === '0') {
+  if (determine_dream === 0) {
     window.location.href = '/nodream';
-  } else if (text.charAt(0) === '1') {
-    //window.location.href = '/dashboard';
+  } else if (determine_dream === 1) {
+    window.location.href = '/dashboard';
   }
 
 }
