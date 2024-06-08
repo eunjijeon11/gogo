@@ -5,6 +5,8 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import { Button } from "@nextui-org/button";
 import { runGoogleGenerativeAI } from "./runGoogleGenerativeAI";
+import { useRecoilState } from "recoil";
+import { resultState } from "@/components/recoil";
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
@@ -14,6 +16,7 @@ export default function AboutPage() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [imagesData, setImagesData] = useState<string[]>([]);
+  const [result, setResult] = useRecoilState(resultState);
 
   const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files ? event.target.files[0] : null;
@@ -27,7 +30,7 @@ export default function AboutPage() {
         const pdfData = new Uint8Array(e.target?.result as ArrayBuffer);
         const pdf = await pdfjs.getDocument({ data: pdfData }).promise;
         const numPages = pdf.numPages;
-        const imagesData: string[] = [];
+        const tempImagesData: string[] = [];
 
         for (let i = 1; i <= numPages; i++) {
           const page = await pdf.getPage(i);
@@ -44,12 +47,11 @@ export default function AboutPage() {
             await page.render(renderContext).promise;
             const imageData = canvas.toDataURL("image/png").split(",")[1];
             //console.log(imageData);
-            imagesData.push(imageData);
+            tempImagesData.push(imageData);
           }
         }
 
-        setImagesData(imagesData);
-        await runGoogleGenerativeAI(imagesData);
+        setImagesData(tempImagesData);
       };
       reader.readAsArrayBuffer(pdfFile);
     }
@@ -63,9 +65,19 @@ export default function AboutPage() {
       } catch (error) {
         console.error("PDF 이미지 변환 중 오류 발생:", error);
       }
+      await runGoogleGenerativeAI(imagesData).then((value: any) => {
+        const determine_dream = value["dream"];
+        console.log(determine_dream);
+
+        setResult(value["result"]);
+
+        // if (determine_dream == 0) {
+        //   window.location.href = "/nodream";
+        // } else if (determine_dream == 1) {
+        //   window.location.href = "/dashboard";
+        // }
+      });
     }
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setLoading(false);
   };
 
   return (
