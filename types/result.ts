@@ -6,7 +6,7 @@ export type ResultType = {
   careers: string[];
   subjects: string[];
   activities: ActivityType[];
-  books: BookType[];
+  books: BookType[] | undefined;
 };
 
 export type ActivityType = {

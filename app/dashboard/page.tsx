@@ -63,7 +63,9 @@ export default function DashboardPage() {
     setIndex(Math.min(Math.max(index + delta, 0), result.length - 1));
   }
 
-  if (result[0].books.length == 0) {
+  console.log(result[0]);
+
+  if (!result[0].books) {
     result.forEach((value, index, array) => {});
   }
 

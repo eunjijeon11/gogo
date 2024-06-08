@@ -7,8 +7,7 @@ import { Button } from "@nextui-org/button";
 import { runGoogleGenerativeAI } from "./runGoogleGenerativeAI";
 import { useRecoilState } from "recoil";
 import { resultState } from "@/components/recoil";
-
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+import { ResultType } from "@/types/result";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -69,7 +68,13 @@ export default function AboutPage() {
           const determine_dream = value["dream"];
           console.log(determine_dream);
 
-          setResult(value["result"]);
+          const list: ResultType[] = [];
+
+          value["result"].forEach((value: unknown) => {
+            list.push(value as ResultType);
+          });
+          console.log(list);
+          setResult(list);
 
           // if (determine_dream == 0) {
           //   window.location.href = "/nodream";
