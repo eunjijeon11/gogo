@@ -1,4 +1,5 @@
 import { ResultType } from "@/types/result";
+import { DreamType } from "@/types/nodream";
 import { atom } from "recoil";
 
 export const resultState = atom<ResultType[]>({
@@ -27,4 +28,18 @@ export const resultState = atom<ResultType[]>({
       ],
     },
   ], // default value (aka initial value)
+});
+
+export const dreamselector = atom<DreamType[]>({
+  key: "dreamselector",
+  default: [
+    {
+      Careers: {
+        Careername: "",
+        description: "",
+      },
+      subjects: [],
+      skills: [],
+    }
+  ],
 });
