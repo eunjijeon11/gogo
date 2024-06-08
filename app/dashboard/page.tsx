@@ -13,7 +13,7 @@ import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
 import { IoMdMail } from "react-icons/io";
 import { ChipList } from "../../components/ChipList";
 import { ActivityCard } from "../../components/activity";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { resultState } from "../../components/recoil";
 import { ActivityType } from "@/types/result";
 import { useEffect, useState } from "react";
@@ -56,16 +56,16 @@ const getBook = async (keyword: String) => {
 };
 
 export default function DashboardPage() {
-  const result = useRecoilValue(resultState);
+  const [result, setResult] = useRecoilState(resultState);
   const [index, setIndex] = useState(0);
 
   function changeIndex(delta: number) {
     setIndex(Math.min(Math.max(index + delta, 0), result.length - 1));
   }
 
-  // if (result[0].books.length == 0) {
-  //   result.forEach((value, index, array) => {});
-  // }
+  if (result[0].books.length == 0) {
+    result.forEach((value, index, array) => {});
+  }
 
   return (
     <div className="grid gap-2 grid-cols-3 grid-rows-3 w-full h-[calc(100vh-65px)] max-h-[900px] p-4">

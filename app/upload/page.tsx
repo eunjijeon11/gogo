@@ -15,7 +15,6 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 export default function AboutPage() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [imagesData, setImagesData] = useState<string[]>([]);
   const [result, setResult] = useRecoilState(resultState);
 
   const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,60 +22,64 @@ export default function AboutPage() {
     setFile(selectedFile);
   };
 
-  const splitpdftoimage = async (pdfFile: File) => {
-    if (pdfFile) {
+  const splitpdftoimage = (pdfFile: File): Promise<string[]> => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
+      const imagesList: string[] = [];
       reader.onload = async (e) => {
-        const pdfData = new Uint8Array(e.target?.result as ArrayBuffer);
-        const pdf = await pdfjs.getDocument({ data: pdfData }).promise;
-        const numPages = pdf.numPages;
-        const tempImagesData: string[] = [];
+        try {
+          const pdfData = new Uint8Array(e.target?.result as ArrayBuffer);
+          const pdf = await pdfjs.getDocument({ data: pdfData }).promise;
+          const numPages = pdf.numPages;
 
-        for (let i = 1; i <= numPages; i++) {
-          const page = await pdf.getPage(i);
-          const viewport = page.getViewport({ scale: 1 });
-          const canvas = document.createElement("canvas");
-          const context = canvas.getContext("2d");
-          if (context) {
-            canvas.width = viewport.width;
-            canvas.height = viewport.height;
-            const renderContext = {
-              canvasContext: context,
-              viewport: viewport,
-            };
-            await page.render(renderContext).promise;
-            const imageData = canvas.toDataURL("image/png").split(",")[1];
-            //console.log(imageData);
-            tempImagesData.push(imageData);
+          for (let i = 1; i <= numPages; i++) {
+            const page = await pdf.getPage(i);
+            const viewport = page.getViewport({ scale: 1 });
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+            if (context) {
+              canvas.width = viewport.width;
+              canvas.height = viewport.height;
+              const renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+              };
+              await page.render(renderContext).promise;
+              const imageData = canvas.toDataURL("image/png").split(",")[1];
+              imagesList.push(imageData);
+            }
           }
+          resolve(imagesList);
+        } catch (error) {
+          reject(error);
         }
-
-        setImagesData(tempImagesData);
       };
+      reader.onerror = (error) => reject(error);
       reader.readAsArrayBuffer(pdfFile);
-    }
+    });
   };
 
   const handleAnalysis = async () => {
     setLoading(true);
     if (file) {
       try {
-        await splitpdftoimage(file);
+        const imagesData = await splitpdftoimage(file);
+
+        await runGoogleGenerativeAI(imagesData).then((value: any) => {
+          const determine_dream = value["dream"];
+          console.log(determine_dream);
+
+          setResult(value["result"]);
+
+          // if (determine_dream == 0) {
+          //   window.location.href = "/nodream";
+          // } else if (determine_dream == 1) {
+          //   window.location.href = "/dashboard";
+          // }
+        });
       } catch (error) {
         console.error("PDF 이미지 변환 중 오류 발생:", error);
       }
-      await runGoogleGenerativeAI(imagesData).then((value: any) => {
-        const determine_dream = value["dream"];
-        console.log(determine_dream);
-
-        setResult(value["result"]);
-
-        // if (determine_dream == 0) {
-        //   window.location.href = "/nodream";
-        // } else if (determine_dream == 1) {
-        //   window.location.href = "/dashboard";
-        // }
-      });
     }
   };
 
